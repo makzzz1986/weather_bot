@@ -1,0 +1,7 @@
+# Configuration for bot
+OWMTOKEN=111
+TGTOKEN=222
+TGCHATID=333
+
+parnas=60.077000 30.341427
+lebyazhie=59.962101 29.418289
