@@ -23,7 +23,7 @@ class Bot:
 #{'dt': 1538136000, 'main': {'temp': 280.661, 'temp_min': 280.661, 'temp_max': 280.661, 'pressure': 1004.16, 'sea_level': 1006.94, 'grnd_level': 1004.16, 'humidity': 100, 'temp_kf': 0}, 'weather': [{'id': 500, 'main': 'Rain', 'description': 'light rain', 'icon': '10d'}], 'clouds': {'all': 92}, 'wind': {'speed': 4.05, 'deg': 312.503}, 'rain': {'3h': 0.61}, 'sys': {'pod': 'd'}, 'dt_txt': '2018-09-28 12:00:00'}
 
     def temp_C(self, temp_K):
-        return round(temp_K - 273.15)
+        return str(round(temp_K - 273.15))
 
     def form_text(self, forecast):
         string = ''
