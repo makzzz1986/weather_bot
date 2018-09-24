@@ -1,11 +1,12 @@
 import os
+from weatherbot import Bot
+from result import response
 
 
 def log(string):
     print(string)
 
-params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}}
-
+params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': {}}
 
 
 # get configuration from config.txt
@@ -33,8 +34,13 @@ except Exception as e:
 env = os.environ
 if 'OWMTOKEN' in env:
     params['OWMTOKEN'] = env['OWMTOKEN']
-else:
-    pass
+if 'TGTOKEN' in env:
+    params['TGTOKEN'] = env['TGTOKEN']
+if 'TGCHATID' in env:
+    params['TGCHATID'] = env['TGCHATID']
 
 print(params)
-#print(env)
+print(len(params))
+
+bot = Bot(**params)
+bot.send()
