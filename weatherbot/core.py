@@ -46,7 +46,7 @@ class Bot:
             messages.append(self.form_text(forecast, self._store['forecasts'][forecast]))
 
         for message in messages:
-            tg_answer = requests.get('http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message), headers=headers)
+            tg_answer = requests.get('http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}&parse_mode=html'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message), headers=headers)
             print(tg_answer)
             #link = 'http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message)
             #with Urlopen(link) as tg_send:
