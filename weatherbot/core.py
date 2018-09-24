@@ -1,4 +1,5 @@
 from urllib.request import urlopen as Urlopen
+import requests
 import json
 
 class Bot:
@@ -39,13 +40,16 @@ class Bot:
         #print(self._store)
         
         messages = []
+        headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)     Chrome/37.0.2049.0 Safari/537.36'}
 
         for forecast in self._store['forecasts'].keys():
             messages.append(self.form_text(self._store['forecasts'][forecast]))
 
         for message in messages:
-            link = 'http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message)
-            with Urlopen(link) as tg_send:
+            tg_answer = requests.get('http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message), headers=headers)
+            print(tg_answer
+            #link = 'http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message)
+            #with Urlopen(link) as tg_send:
                 #print(tg_send.read().decode('utf-8'))
-                tg_answer = json.loads(tg_send.read().decode('utf-8'))
-                print(tg_answer)
+            #    tg_answer = json.loads(tg_send.read().decode('utf-8'))
+            #    print(tg_answer)
