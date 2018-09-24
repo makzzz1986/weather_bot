@@ -47,7 +47,7 @@ class Bot:
 
         for message in messages:
             tg_answer = requests.get('http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message), headers=headers)
-            print(tg_answer
+            print(tg_answer)
             #link = 'http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message)
             #with Urlopen(link) as tg_send:
                 #print(tg_send.read().decode('utf-8'))
