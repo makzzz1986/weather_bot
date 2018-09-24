@@ -29,8 +29,8 @@ class Bot:
         string = ''
         string += forecast['cod'] + '\n'
         if forecast['cod'] == '200':
-            for elem in forecast['list'][:24]:
-                string += ' '.join([elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], round(elem['wind']['speed'])]) + '\n'
+            for elem in forecast['list'][:12]:
+                string += ' '.join([elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed']))]) + '\n'
         else:
             print(forecast[forecast])
         return string
