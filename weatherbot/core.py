@@ -12,7 +12,7 @@ class Bot:
                 link = 'http://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&APPID={}'.format(self._store['places'][place].split()[0], self._store['places'][place].split()[1], self._store['OWMTOKEN'])
                 with Urlopen(link) as owm_request:
                     owm_answer = json.loads(owm_request.read().decode('utf-8'))
-                    print(owm_answer)
+                    #print(owm_answer)
                     self._store['forecasts'][place] = owm_answer
             except Exception as e:
                 print(e)
@@ -30,7 +30,7 @@ class Bot:
         string += forecast['cod'] + '\n'
         if forecast['cod'] == '200':
             for elem in forecast['list'][:24]:
-                string += ' '.join(elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], round(elem['wind']['speed'])) + '\n'
+                string += ' '.join([elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], round(elem['wind']['speed'])]) + '\n'
         else:
             print(forecast[forecast])
         return string
