@@ -43,4 +43,5 @@ print(params)
 print(len(params))
 
 bot = Bot(**params)
+#bot.test(response)
 bot.send()
