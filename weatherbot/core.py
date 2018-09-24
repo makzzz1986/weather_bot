@@ -25,9 +25,9 @@ class Bot:
     def temp_C(self, temp_K):
         return str(round(temp_K - 273.15))
 
-    def form_text(self, forecast):
+    def form_text(self, title, forecast):
         string = ''
-        string += forecast['cod'] + '\n'
+        string += '<b>Weather for %s</b>\n' % title
         if forecast['cod'] == '200':
             for elem in forecast['list'][:12]:
                 string += ' '.join([elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed']))]) + '\n'
@@ -43,7 +43,7 @@ class Bot:
         headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)     Chrome/37.0.2049.0 Safari/537.36'}
 
         for forecast in self._store['forecasts'].keys():
-            messages.append(self.form_text(self._store['forecasts'][forecast]))
+            messages.append(self.form_text(forecast, self._store['forecasts'][forecast]))
 
         for message in messages:
             tg_answer = requests.get('http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message), headers=headers)
