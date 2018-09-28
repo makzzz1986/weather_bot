@@ -25,12 +25,15 @@ class Bot:
     def temp_C(self, temp_K):
         return str(round(temp_K - 273.15))
 
+    def form_line(self, elem):
+        return "<b>Date:</b> {}, <b>temp:</b> {}, <b>{}</b> with wind's speed {} m/s\n".format(elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed'])))
+
     def form_text(self, title, forecast):
         string = ''
         string += '<b>Weather for %s</b>\n' % title
         if forecast['cod'] == '200':
             for elem in forecast['list'][:12]:
-                string += ' '.join([elem['dt_txt'], self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed']))]) + '\n'
+                string += self.form_line(elem)
         else:
             print(forecast[forecast])
         return string
