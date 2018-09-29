@@ -23,15 +23,15 @@ class Bot:
 
 #{'dt': 1538136000, 'main': {'temp': 280.661, 'temp_min': 280.661, 'temp_max': 280.661, 'pressure': 1004.16, 'sea_level': 1006.94, 'grnd_level': 1004.16, 'humidity': 100, 'temp_kf': 0}, 'weather': [{'id': 500, 'main': 'Rain', 'description': 'light rain', 'icon': '10d'}], 'clouds': {'all': 92}, 'wind': {'speed': 4.05, 'deg': 312.503}, 'rain': {'3h': 0.61}, 'sys': {'pod': 'd'}, 'dt_txt': '2018-09-28 12:00:00'}
 
-    def convert_to_MSK_tz(self, timestamp)
+    def convert_to_MSK_tz(self, timestamp):
         msk = datetime.datetime.fromtimestamp(timestamp+60*60*3)
-        return msk.strftime('%Y-%m-%d %H')
+        return msk.strftime('%Y-%m-%d, %H')
 
     def temp_C(self, temp_K):
         return str(round(temp_K - 273.15))
 
     def form_line(self, elem):
-        return "At <b>{}</b> o'clock, <b>temp:</b> {}, <b>{}</b> with wind's speed {} m/s\n".format(self.convert_to_MSK_tz(elem['dt_txt']), self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed'])))
+        return "At <b>{}</b> o'clock, <b>temp:</b> {}, <b>{}</b> with wind's speed {} m/s\n".format(self.convert_to_MSK_tz(elem['dt']), self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed'])))
 
     def form_text(self, title, forecast):
         string = ''
