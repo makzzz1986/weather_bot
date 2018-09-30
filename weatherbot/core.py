@@ -25,22 +25,52 @@ class Bot:
 
     def convert_to_MSK_tz(self, timestamp):
         msk = datetime.datetime.fromtimestamp(timestamp+60*60*3)
-        return msk.strftime('%Y-%m-%d, %H')
+        return msk.strftime('%H')
+#        return msk.strftime('%Y-%m-%d, %H')
 
     def temp_C(self, temp_K):
         return str(round(temp_K - 273.15))
 
+    def wind(self, ms):
+        if round(ms) > 7:
+            return '<i>w</i> '
+        elif round(ms) > 16:
+            return '<i>W</i> '
+        elif round(ms) > 25:
+            return '<b><i>W</i>!</b>'
+        else:
+            return ''
+
+    def lent(self, string):     # get string's length without html tags
+        tag = False
+        counter = 0
+        for ch in string:
+            if ch == '<':
+                tag = True
+            elif ch == '>':
+                tag = False
+            else:
+                if tag == False:
+                    counter += 1
+        return counter
+
     def form_line(self, elem):
-        return "At <b>{}</b> o'clock, <b>temp:</b> {}, <b>{}</b> with wind's speed {} m/s\n".format(self.convert_to_MSK_tz(elem['dt']), self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], str(round(elem['wind']['speed'])))
+        line = "at {}: <b>{}</b><i>C°</i>, <b>{}</b> {}\n".format(self.convert_to_MSK_tz(elem['dt']), self.temp_C(elem['main']['temp']), elem['weather'][0]['description'], self.wind(elem['wind']['speed']))
+        return ' '*4 + line
+        #return ' '*(46-self.lent(line)) + line
 
     def form_text(self, title, forecast):
         string = ''
         string += '<b>Weather for %s</b>\n' % title
         if forecast['cod'] == '200':
-            for elem in forecast['list'][:12]:
+            day = ''
+            for elem in forecast['list'][:13]:
+                if day != elem['dt_txt'].split()[0]:
+                    day = elem['dt_txt'].split()[0]
+                    string += day + ' '*24  + '\n'         # Form date
                 string += self.form_line(elem)
         else:
-            print(forecast[forecast])
+            string += str(forecast[forecast])
         return string
 
     def send(self):
