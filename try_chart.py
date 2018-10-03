@@ -32,6 +32,14 @@ for date in [ d['dt'] for d in api['list'] ]:
 
 
 texts = [ tx['weather'][0]['main'] for tx in api['list'] ]
+
+texposition = []
+temp = 0
+for t in temps:
+    if t 
+textposition
+
+
 temp_min = min(temps)
 
 # Generate list with dicts
@@ -56,7 +64,11 @@ images_ico = [ {'sizex': 0.1,
 #print(dates)
 #print(temps)
 
-data = [{'x':dates, 'y':temps, 'text':texts, 'mode':'lines+markers+text'}]
+data = [{'x':dates, 
+         'y':temps, 
+         'text':texts, 
+         'textposition': 'top right',
+         'mode':'lines+markers+text'}]
 #data = [{'x':dates[:24], 'y':temps[:24], 'mode':'lines+markers'}]
 
 layout = go.Layout(title='Прогнозец',
