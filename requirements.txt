@@ -1,0 +1,6 @@
+pip3 install psutil
+
+#apt install orca
+
+https://github.com/plotly/orca
+WGET from https://github.com/plotly/orca/releases
