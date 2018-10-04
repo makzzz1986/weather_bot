@@ -33,7 +33,7 @@ except Exception as e:
     log(e)
 
 
-env = os.environ
+env = os.environ        # get config from enviroment
 if 'OWMTOKEN' in env:
     params['OWMTOKEN'] = env['OWMTOKEN']
 if 'TGTOKEN' in env:
@@ -45,5 +45,5 @@ print(params)
 print(len(params))
 
 bot = Bot(**params)
-#bot.test(response)
+#bot.test(response)        # used for test
 bot.send()
