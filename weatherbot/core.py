@@ -2,6 +2,8 @@ from urllib.request import urlopen as Urlopen
 import datetime
 import requests
 import json
+from .png import Export_png as export
+
 
 class Bot:
     def __init__(self, **kwargs):
@@ -17,6 +19,11 @@ class Bot:
                     self._store['forecasts'][place] = owm_answer
             except Exception as e:
                 print(e)
+
+    def export_png(self):
+        for forecast in self._store['forecasts'].keys():
+            forecast_png = self.export(self._store['forecasts'][forecast])
+            self._store['images'][forecast] = forecast_png.export(forecast)
 
     def test(self, response):
         self._store['forecasts']['Parnas'] = response
@@ -91,3 +98,7 @@ class Bot:
                 #print(tg_send.read().decode('utf-8'))
             #    tg_answer = json.loads(tg_send.read().decode('utf-8'))
             #    print(tg_answer)
+
+        self.export_png()
+        for image in self._store['images'].keys():
+            requests.get('http://api.telegram.org/bot{}/sendPhoto?chat_id={}&photo={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], self._store['images'][image]), headers=headers)

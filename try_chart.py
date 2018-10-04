@@ -11,14 +11,19 @@ import datetime
 
 def convert_to_MSK_tz(timestamp):
     msk = datetime.datetime.fromtimestamp(timestamp+60*60*3)
-    return msk.strftime('%H %A')
-    #return msk.strftime('%H %Y-%M-%d')
+    days= {'Monday': 'Пн',
+           'Tuesday': 'Вт',
+           'Wednesday': 'Ср',
+           'Thursday': 'Чт',
+           'Friday': 'Пт',
+           'Saturday': 'Сб',
+           'Sunday': 'Вс'}
+    return msk.strftime('%H')+' '+days[msk.strftime('%A')]
 
 with open('result.txt', 'r') as result:
     api = json.loads(result.read())
 
 # change days to observe
-#api['list'] = api['list']
 #api['list'] = api['list'][:13]
 #api['list'] = api['list'][:30]
 
@@ -47,8 +52,6 @@ for t in temps[:-1]:
 
 temp_min = min(temps)
 
-#                'x': 0.03 + api['list'].index(ico)*0.0735,
-#                'x': 0.03 + api['list'].index(ico)*0.91/len(api['list']),
 # x 0.955 for 13 units
 # x 0.91 for 40 units
 # Generate list with dicts
@@ -61,36 +64,18 @@ images_ico = [ {'sizex': 0.1,
                 'xanchor': 'left',
                 'yanchor': 'bottom',
                 'source': 'http://openweathermap.org/img/w/{}.png'.format(api['list'][count]['weather'][0]['icon'])} for count in range(len(api['list'])) ]
-print(images_ico)
+#print(images_ico)
 
 # Try annotations
-annotations = [{'xref': 'x',
-                'yref': 'y',
-                'showarrow': True,
+annotations = [{'xref': 'paper',
+                'yref': 'paper',
+                'showarrow': False,
                 'arrowhead': 0,
-                'ax': -5,
-                'ay': 20,
                 'textangle': 90,
-                'x': dates[count],
-                'y': temps[count],
+                'x': 0.04 + count*0.945/len(api['list']),
+                'y': 0,
                 'text': texts[count]} for count in range(len(api['list']))]
 #print(annotations)
-
-#    msk_tz = convert_to_MSK_tz(date)
-#    if last_date != msk_tz.split()[1]:
-#        last_date = msk_tz.split()[1]
-#        dates.append(msk_tz)
-#    else:
-#        dates.append(msk_tz.split()[0] + ' '*10)
-
-#print(dates)
-#print(temps)
-
-#data = [{'x':dates, 
-#         'y':temps, 
-#         'text':texts, 
-#         'textposition': textposition,
-#         'mode':'lines+markers+text'}]
 
 data = [{'x':dates, 
          'y':temps, 
@@ -112,7 +97,7 @@ layout = go.Layout(title='Прогнозец',
                               mirror='ticks'
                               ), 
                    yaxis=dict(
-                              title='Градусы цельсия',
+                              title='Градусы Цельсия',
                               ticks='outside',
                               tickwidth=2, 
                               showgrid=True,
