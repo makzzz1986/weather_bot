@@ -22,7 +22,7 @@ class Bot:
 
     def export_png(self):
         for forecast in self._store['forecasts'].keys():
-            forecast_png = self.export(self._store['forecasts'][forecast])
+            forecast_png = export(self._store['forecasts'][forecast])
             self._store['images'][forecast] = forecast_png.export(forecast)
 
     def test(self, response):

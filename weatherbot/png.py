@@ -23,7 +23,7 @@ class Export_png:
                'Sunday': 'Вс'}
         return msk.strftime('%H')+' '+days[msk.strftime('%A')]
     
-    def export(self, png_filename)
+    def export(self, png_filename):
         temps = [ round(t['main']['temp']-273) for t in self.forecast['list'] ]
         
         dates = []
@@ -54,7 +54,7 @@ class Export_png:
                         'yref': 'paper', 
                         'xanchor': 'left',
                         'yanchor': 'bottom',
-                        'source': 'http://openweathermap.org/img/w/{}.png'.format(api['list'][count]['weather'][0]['icon'])} for count in range(len(self.forecast['list'])) ]
+                        'source': 'http://openweathermap.org/img/w/{}.png'.format(self.forecast['list'][count]['weather'][0]['icon'])} for count in range(len(self.forecast['list'])) ]
         #print(images_ico)
         
         # Try annotations
