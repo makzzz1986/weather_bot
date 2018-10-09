@@ -40,7 +40,7 @@ class Export_png:
     
     def export(self, png_filename):
         temps = [ round(t['main']['temp']-273, 1) for t in self.forecast['list'] ]
-        wind_chill = [ get_wind_chill(temps[count], self.forecast['list'][count]['wind']['speed']*3.6) for count in range(len(self.forecast['list'])) ]
+        wind_chill = [ self.get_wind_chill(temps[count], self.forecast['list'][count]['wind']['speed']*3.6) for count in range(len(self.forecast['list'])) ]
         
         maxlevel = [ max(temps) for z in range(len(self.forecast['list'])) ]
         zerolevel = [ min(wind_chill) for z in range(len(self.forecast['list'])) ]
@@ -52,14 +52,14 @@ class Export_png:
         
         dates = []
         for date in [ d['dt'] for d in self.forecast['list'] ]:
-            dates.append(convert_to_MSK_tz(date))
+            dates.append(self.convert_to_MSK_tz(date))
         
         images_src = [icon['weather'][0]['description'] for icon in self.forecast['list']]
         
-        rains = fill_cond('rain')
-        snows = fill_cond('snow')
-        clear_sky = fill_cond('clear sky')
-        clouds = fill_cond('clouds')
+        rains = self.fill_cond('rain')
+        snows = self.fill_cond('snow')
+        clear_sky = self.fill_cond('clear sky')
+        clouds = self.fill_cond('clouds')
         
         # PLOT
         
