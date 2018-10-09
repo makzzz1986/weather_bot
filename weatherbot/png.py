@@ -19,7 +19,7 @@ class Export_png:
     
     def fill_cond(self, string):
         lst = []
-        for count in range(len(api['list'])):
+        for count in range(len(self.forecast['list'])):
             if string in texts[count]:
                 lst.append(wind_chill[count])
             else:
@@ -39,22 +39,22 @@ class Export_png:
         return msk.strftime('%H')+' '+days[msk.strftime('%A')]
     
     def export(self, png_filename):
-        temps = [ round(t['main']['temp']-273, 1) for t in api['list'] ]
-        wind_chill = [ get_wind_chill(temps[count], api['list'][count]['wind']['speed']*3.6) for count in range(len(api['list'])) ]
+        temps = [ round(t['main']['temp']-273, 1) for t in self.forecast['list'] ]
+        wind_chill = [ get_wind_chill(temps[count], self.forecast['list'][count]['wind']['speed']*3.6) for count in range(len(self.forecast['list'])) ]
         
-        maxlevel = [ max(temps) for z in range(len(api['list'])) ]
-        zerolevel = [ min(wind_chill) for z in range(len(api['list'])) ]
-        underzerolevel = [ min(wind_chill)-3 for z in range(len(api['list'])) ]
+        maxlevel = [ max(temps) for z in range(len(self.forecast['list'])) ]
+        zerolevel = [ min(wind_chill) for z in range(len(self.forecast['list'])) ]
+        underzerolevel = [ min(wind_chill)-3 for z in range(len(self.forecast['list'])) ]
         zerolevel_point = min(zerolevel)
         underzerolevel_point = min(underzerolevel)
         
-        texts = [ tx['weather'][0]['description'] for tx in api['list'] ]
+        texts = [ tx['weather'][0]['description'] for tx in self.forecast['list'] ]
         
         dates = []
-        for date in [ d['dt'] for d in api['list'] ]:
+        for date in [ d['dt'] for d in self.forecast['list'] ]:
             dates.append(convert_to_MSK_tz(date))
         
-        images_src = [icon['weather'][0]['description'] for icon in api['list']]
+        images_src = [icon['weather'][0]['description'] for icon in self.forecast['list']]
         
         rains = fill_cond('rain')
         snows = fill_cond('snow')
@@ -72,7 +72,7 @@ class Export_png:
         for tick in graph.get_xticklabels():  # rotate X labels
             tick.set_rotation(285)
         
-        for count in range(len(api['list'])):
+        for count in range(len(self.forecast['list'])):
             graph.text(dates[count],
                        underzerolevel_point,
                        texts[count],
