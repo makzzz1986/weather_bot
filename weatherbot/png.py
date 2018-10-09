@@ -17,7 +17,7 @@ class Export_png:
         return wind_temp
     
     
-    def fill_cond(self, string, texts):
+    def fill_cond(self, string, texts, wind_chill):
         lst = []
         for count in range(len(self.forecast['list'])):
             if string in texts[count]:
@@ -56,10 +56,10 @@ class Export_png:
         
         images_src = [icon['weather'][0]['description'] for icon in self.forecast['list']]
         
-        rains = self.fill_cond('rain', texts)
-        snows = self.fill_cond('snow', texts)
-        clear_sky = self.fill_cond('clear sky', texts)
-        clouds = self.fill_cond('clouds', texts)
+        rains = self.fill_cond('rain', texts, wind_chill)
+        snows = self.fill_cond('snow', texts, wind_chill)
+        clear_sky = self.fill_cond('clear sky', texts, wind_chill)
+        clouds = self.fill_cond('clouds', texts, wind_chill)
         
         # PLOT
         
