@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+
 from weatherbot import Bot
 from result import response
 
@@ -10,10 +11,10 @@ def log(string):
 
 params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': []}
 
-
+current_folder = os.path.dirname(os.path.realpath(__file__))
 # get configuration from config.txt
 try:
-    with open('config.txt', 'r') as config_file:
+    with open(current_folder+'/config.txt', 'r') as config_file:
         counter = 0
         for line in config_file.readlines():
             if not line.startswith('#') and not len(line.strip()) == 0:

@@ -83,9 +83,7 @@ class Bot:
         
         bot = telegram.Bot(token=self._store['TGTOKEN'])
 
-#        for place in self._store['forecasts']:
-#            bot.send_message(chat_id=self._store['TGCHATID'], text=self.form_text(place), parse_mode=telegram.ParseMode.HTML)
-
         for place in self._store['forecasts']:
+            bot.send_message(chat_id=self._store['TGCHATID'], text=self.form_text(place), parse_mode=telegram.ParseMode.HTML)
             forecast_png = export(place['forecast'], place['place_name'])
             bot.send_photo(chat_id=self._store['TGCHATID'], photo=open(forecast_png.export(place['place_name']), 'rb'))
