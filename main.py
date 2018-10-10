@@ -8,7 +8,7 @@ from result import response
 def log(string):
     print(string)
 
-params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': {}, 'images': {}}
+params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': []}
 
 
 # get configuration from config.txt

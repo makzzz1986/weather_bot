@@ -7,8 +7,9 @@ import datetime
 import math
 
 class Export_png:
-    def __init__(self, forecast):
+    def __init__(self, forecast, title=''):
         self.forecast = forecast
+        self.title = title
 
     def get_wind_chill(self, temp, wind_speed):
         wind_temp = round(33+(0.478+0.237*math.sqrt(wind_speed)-0.0124*wind_speed)*(temp-33), 1)
@@ -104,7 +105,8 @@ class Export_png:
         
         fig.set_figwidth(12)
         fig.tight_layout()
+        plt.title(self.title)
         #plt.show()
-        plt.savefig('%s.png' % png_filename)
+        plt.savefig(os.path.join(os.getcwd(), png_filename))
         
-        return '%s.png' % png_filename
+        return os.path.join(os.getcwd(), png_filename+'.png')
