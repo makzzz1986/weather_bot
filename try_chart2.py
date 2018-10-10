@@ -115,5 +115,7 @@ graph.fill_between(dates, zerolevel, clear_sky, where=clear_sky>zerolevel, facec
 
 fig.set_figwidth(12)
 fig.tight_layout()
+#plt.title('TITLE!')
+fig.suptitle('Title!', fontsize=14, y=1)
 #plt.show()
 plt.savefig('chart_plt.png')

@@ -105,7 +105,7 @@ class Export_png:
         
         fig.set_figwidth(12)
         fig.tight_layout()
-        plt.title(self.title)
+        fig.suptitle(self.title, fontsize=14, y=1)
         #plt.show()
         plt.savefig(os.path.join(os.getcwd(), png_filename))
         
