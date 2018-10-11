@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+
 from weatherbot import Bot
 from result import response
 
@@ -8,12 +9,12 @@ from result import response
 def log(string):
     print(string)
 
-params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': {}}
+params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': []}
 
-
+current_folder = os.path.dirname(os.path.realpath(__file__))
 # get configuration from config.txt
 try:
-    with open('config.txt', 'r') as config_file:
+    with open(current_folder+'/config.txt', 'r') as config_file:
         counter = 0
         for line in config_file.readlines():
             if not line.startswith('#') and not len(line.strip()) == 0:
@@ -33,7 +34,7 @@ except Exception as e:
     log(e)
 
 
-env = os.environ
+env = os.environ        # get config from enviroment
 if 'OWMTOKEN' in env:
     params['OWMTOKEN'] = env['OWMTOKEN']
 if 'TGTOKEN' in env:
@@ -45,5 +46,5 @@ print(params)
 print(len(params))
 
 bot = Bot(**params)
-#bot.test(response)
+#bot.test(response)        # used for test
 bot.send()

@@ -1,7 +1,10 @@
 from urllib.request import urlopen as Urlopen
 import datetime
-import requests
+#import requests
 import json
+import telegram
+from .png import Export_png as export
+
 
 class Bot:
     def __init__(self, **kwargs):
@@ -14,13 +17,14 @@ class Bot:
                 with Urlopen(link) as owm_request:
                     owm_answer = json.loads(owm_request.read().decode('utf-8'))
                     #print(owm_answer)
-                    self._store['forecasts'][place] = owm_answer
+                    self._store['forecasts'].append({'place_name': place, 'forecast': owm_answer})
             except Exception as e:
                 print(e)
 
     def test(self, response):
         self._store['forecasts']['Parnas'] = response
 
+# Typical one poin of forecast
 #{'dt': 1538136000, 'main': {'temp': 280.661, 'temp_min': 280.661, 'temp_max': 280.661, 'pressure': 1004.16, 'sea_level': 1006.94, 'grnd_level': 1004.16, 'humidity': 100, 'temp_kf': 0}, 'weather': [{'id': 500, 'main': 'Rain', 'description': 'light rain', 'icon': '10d'}], 'clouds': {'all': 92}, 'wind': {'speed': 4.05, 'deg': 312.503}, 'rain': {'3h': 0.61}, 'sys': {'pod': 'd'}, 'dt_txt': '2018-09-28 12:00:00'}
 
     def convert_to_MSK_tz(self, timestamp):
@@ -59,35 +63,27 @@ class Bot:
         return ' '*4 + line
         #return ' '*(46-self.lent(line)) + line
 
-    def form_text(self, title, forecast):
+    def form_text(self, place):
         string = ''
-        string += '<b>Weather for %s</b>\n' % title
-        if forecast['cod'] == '200':
+        string += '<b>Weather for %s</b>\n' % place['place_name']
+        if place['forecast']['cod'] == '200':
             day = ''
-            for elem in forecast['list'][:13]:
+            for elem in place['forecast']['list'][:13]:
                 if day != elem['dt_txt'].split()[0]:
                     day = elem['dt_txt'].split()[0]
                     string += day + ' '*24  + '\n'         # Form date
                 string += self.form_line(elem)
         else:
-            string += str(forecast[forecast])
+            string += str(place['forecast'])
         return string
 
     def send(self):
         response = self.request()
         #print(self._store)
         
-        messages = []
-        headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)     Chrome/37.0.2049.0 Safari/537.36'}
+        bot = telegram.Bot(token=self._store['TGTOKEN'])
 
-        for forecast in self._store['forecasts'].keys():
-            messages.append(self.form_text(forecast, self._store['forecasts'][forecast]))
-
-        for message in messages:
-            tg_answer = requests.get('http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}&parse_mode=html'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message), headers=headers)
-            print(tg_answer)
-            #link = 'http://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}'.format(self._store['TGTOKEN'], self._store['TGCHATID'], message)
-            #with Urlopen(link) as tg_send:
-                #print(tg_send.read().decode('utf-8'))
-            #    tg_answer = json.loads(tg_send.read().decode('utf-8'))
-            #    print(tg_answer)
+        for place in self._store['forecasts']:
+            bot.send_message(chat_id=self._store['TGCHATID'], text=self.form_text(place), parse_mode=telegram.ParseMode.HTML)
+            forecast_png = export(place['forecast'], place['place_name'])
+            bot.send_photo(chat_id=self._store['TGCHATID'], photo=open(forecast_png.export(place['place_name']), 'rb'))
