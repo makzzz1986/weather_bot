@@ -4,11 +4,15 @@ import datetime
 import json
 import telegram
 from .png import Export_png as export
+import logging
 
 
 class Bot:
     def __init__(self, **kwargs):
         self._store = kwargs
+        if 'log_dir' in kwargs:
+            date = datetime.datetime.utcnow()
+            logging.basicConfig(filename=kwargs['log_dir']+'/'+str(date.now()).replace(' ', '_'), level=logging.INFO)
 
     def request(self):
         for place in self._store['places'].keys():

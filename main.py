@@ -9,7 +9,7 @@ from result import response
 def log(string):
     print(string)
 
-params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'places': {}, 'forecasts': []}
+params = {'OWMTOKEN': '', 'TGTOKEN': '', 'TGCHATID': '', 'log_dir': '', 'places': {}, 'forecasts': []}
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
 # get configuration from config.txt
@@ -43,7 +43,14 @@ if 'TGCHATID' in env:
     params['TGCHATID'] = env['TGCHATID']
 
 print(params)
-print(len(params))
+
+if ('log_dir' not in params.keys()) or (params['log_dir'] == ''):
+    print(current_folder)
+    params['log_dir'] = current_folder+'/logs'
+
+if not os.path.exists(params['log_dir']):  # creating folder for logs
+    os.makedirs(params['log_dir'])
+
 
 bot = Bot(**params)
 #bot.test(response)        # used for test
